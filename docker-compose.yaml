@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: postgis/postgis
+    container_name: layer-modeller-server
+    environment:
+      POSTGRES_PASSWORD: lm123
+      POSTGRES_USER: layer-modeller
+      POSTGRES_DB: layer-modeller-database
+    ports:
+      - 15432:5432
+  app:
+    image: layer-modeller-app
+    ports: 
+     - 13000:3000

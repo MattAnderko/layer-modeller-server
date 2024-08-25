@@ -1,0 +1,2 @@
+GET http://localhost:13000/raster/pecs
+Accept: image/tiff
