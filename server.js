@@ -52,7 +52,7 @@ app.post("/", (req, res) => {
 //     res.sendStatus(500);
 //   }
 // });
-app.get("/raster/:name", async (req, res) => {
+app.get("/get-data/:name", async (req, res) => {
   const tableName = `${req.params.name}_raster`;
 
   const client = await pool.connect();
@@ -68,10 +68,15 @@ app.get("/raster/:name", async (req, res) => {
         FROM ${tableName}
       ),
       boreholes AS (
-        SELECT 
-          b.*, 
-          ST_X(b.geom) AS x,
-          ST_Y(b.geom) AS y
+        SELECT
+          b.id AS id,
+          ST_X(b.geom) AS "eovX",
+          ST_Y(b.geom) AS "eovY",
+          b.jelszam AS jelszam,
+          b.reteg_mig AS reteg$mig,
+          b.reteg_mtol AS reteg$mtol,
+          b.reteg_lito_geo AS reteg$lito$geo,
+          b.reteg_lito_nev AS reteg$lito$nev
         FROM borehole_data b, raster_data
         WHERE ST_Intersects(b.geom, raster_data.extent)
       )
